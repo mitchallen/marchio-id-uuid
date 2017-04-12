@@ -191,7 +191,7 @@ module.exports.create = function (spec) {
  * @param {string} ```INVALID_VERSION_PARAMETER``` - marchio-id-uuid.validate - invalid version parameter
  * @example <caption>Usage example</caption>
  * .catch( (err) => {
- *    if( err.message == _factory.ERROR.MODEL_MUST_BE_DEFINED ) {
+ *    if( err.message == _factory.ERROR.GENERATE_V1_V4_ONLY ) {
  *        ...
  *    }
  * }
