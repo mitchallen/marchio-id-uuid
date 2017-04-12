@@ -7,6 +7,9 @@
 <dt><a href="#module_marchio-id-uuid-factory">marchio-id-uuid-factory</a></dt>
 <dd><p>Factory module</p>
 </dd>
+<dt><a href="#module_marchio-id-uuid-ERROR">marchio-id-uuid-ERROR</a></dt>
+<dd><p>Error module</p>
+</dd>
 </dl>
 
 <a name="module_marchio-id-uuid"></a>
@@ -119,4 +122,22 @@ It takes one spec parameter that must be an object with named parameters
     .catch( function(err) { 
         console.error(err); 
     });
+```
+<a name="module_marchio-id-uuid-ERROR"></a>
+
+## marchio-id-uuid-ERROR
+Error module
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ```MODEL_MUST_BE_DEFINED``` | <code>string</code> | datastore.create: model must be defined |
+
+**Example** *(Usage example)*  
+```js
+ .catch( (err) => {
+    if( err.message == _factory.ERROR.MODEL_MUST_BE_DEFINED ) {
+        ...
+    }
+}
 ```

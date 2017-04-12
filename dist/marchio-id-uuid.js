@@ -50,11 +50,11 @@ module.exports.create = function (spec) {
         var _package2 = "marchio-id-uuid";
 
         var _uuidRegex = {
-            "v1": /^[0-9A-F]{8}-[0-9A-F]{4}-[1][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i,
-            "v2": /^[0-9A-F]{8}-[0-9A-F]{4}-[2][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i,
-            "v3": /^[0-9A-F]{8}-[0-9A-F]{4}-[3][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i,
-            "v4": /^[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i,
-            "v5": /^[0-9A-F]{8}-[0-9A-F]{4}-[5][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i
+            v1: /^[0-9A-F]{8}-[0-9A-F]{4}-[1][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i,
+            v2: /^[0-9A-F]{8}-[0-9A-F]{4}-[2][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i,
+            v3: /^[0-9A-F]{8}-[0-9A-F]{4}-[3][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i,
+            v4: /^[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i,
+            v5: /^[0-9A-F]{8}-[0-9A-F]{4}-[5][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i
         };
 
         resolve({
@@ -108,9 +108,14 @@ module.exports.create = function (spec) {
               *     console.error(err); 
               * });
             */
-            generate: function generate() {
+            generate: function generate(spec) {
+                spec = spec || {};
+                var v = spec.version || "v4";
                 return new Promise(function (resolve, reject) {
-                    resolve(uuid.v4());
+                    if (!uuid[v]) {
+                        reject(new Error(_ERROR.GENERATE_V1_V4_ONLY));
+                    }
+                    resolve(uuid[v]());
                 });
             },
             /** Validate ID String
@@ -132,16 +137,33 @@ module.exports.create = function (spec) {
               * });
             */
             validate: function validate(str, ver) {
-                var v = ver ? ver : "v4";
+                var v = ver || "v4"; // The 'v' is required by the error message template
                 return new Promise(function (resolve, reject) {
                     if (!_uuidRegex[v]) {
-                        reject("marchio-id-uuid.validate - invalid version parameter: " + v);
+                        reject(new Error(_ERROR.INVALID_VERSION_PARAMETER + ": " + v));
                     }
                     resolve(str.search(_uuidRegex[v]) != -1);
                 });
             }
         });
     });
+};
+
+/**
+ * 
+ * Error module
+ * @module marchio-id-uuid-ERROR
+ * @param {string} ```MODEL_MUST_BE_DEFINED``` - datastore.create: model must be defined
+ * @example <caption>Usage example</caption>
+ .catch( (err) => {
+    if( err.message == _factory.ERROR.MODEL_MUST_BE_DEFINED ) {
+        ...
+    }
+}
+ */
+var _ERROR = module.exports.ERROR = {
+    GENERATE_V1_V4_ONLY: 'marchio-id-uuid.generate only supports version values of "v1" or "v4"',
+    INVALID_VERSION_PARAMETER: 'marchio-id-uuid.validate - invalid version parameter'
 };
 
 },{"uuid":2}],2:[function(_dereq_,module,exports){

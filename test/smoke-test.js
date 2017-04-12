@@ -90,6 +90,111 @@ describe('module factory smoke test', () => {
         });
     });
 
+    it('generate should default to v4', done => {
+        var _idMgr = null,
+            _version = "v4";
+        _factory.create({})
+        .then(function(obj) {
+            _idMgr = obj;
+            return obj.generate();
+        })
+        .then(function(result) {
+            return _idMgr.validate(result, _version );
+        })
+        .then(function(result) {
+            result.should.eql(true);
+            done();
+        })
+        .catch( function(err) { 
+            console.error(err);
+            done(err); 
+        });
+    });
+
+    it('generate should succeed for v1', done => {
+        var _idMgr = null,
+            _version = "v1";
+        _factory.create({})
+        .then(function(obj) {
+            _idMgr = obj;
+            return obj.generate( { version: _version } );
+        })
+        .then(function(result) {
+            return _idMgr.validate(result, _version );
+        })
+        .then(function(result) {
+            result.should.eql(true);
+            done();
+        })
+        .catch( function(err) { 
+            console.error(err);
+            done(err); 
+        });
+    });
+
+    it('generate should fail for v2', done => {
+        var _idMgr = null,
+            _version = "v2";
+        _factory.create({})
+        .then(function(obj) {
+            _idMgr = obj;
+            return obj.generate( { version: _version } );
+        })
+        .catch( function(err) { 
+            // We are expecting this error
+            // console.error(err);
+            err.message.should.eql(_factory.ERROR.GENERATE_V1_V4_ONLY);
+            done(); 
+        })
+        .catch( function(err) { 
+            // We are NOT expecting this error
+            console.error(err.message); 
+            done(err);  // to pass on err, remove err (done() - no arguments)
+        });
+    });
+
+    it('generate should fail for v3', done => {
+        var _idMgr = null,
+            _version = "v3";
+        _factory.create({})
+        .then(function(obj) {
+            _idMgr = obj;
+            return obj.generate( { version: _version } );
+        })
+        .catch( function(err) { 
+            // We are expecting this error
+            // console.error(err);
+            err.message.should.eql(_factory.ERROR.GENERATE_V1_V4_ONLY);
+            done(); 
+        })
+        .catch( function(err) { 
+            // We are NOT expecting this error
+            console.error(err.message); 
+            done(err);  // to pass on err, remove err (done() - no arguments)
+        });
+    });
+
+    it('generate should fail for v5', done => {
+        var _idMgr = null,
+            _version = "v5";
+        _factory.create({})
+        .then(function(obj) {
+            _idMgr = obj;
+            return obj.generate( { version: _version } );
+        })
+        .catch( function(err) { 
+            // We are expecting this error
+            // console.error(err);
+            err.message.should.eql(_factory.ERROR.GENERATE_V1_V4_ONLY);
+            done(); 
+        })
+        .catch( function(err) { 
+            // We are NOT expecting this error
+            console.error(err.message); 
+            done(err);  // to pass on err, remove err (done() - no arguments)
+        });
+    });
+
     it('validate should return true for valid id', done => {
         var _idMgr = null;
         _factory.create({})
@@ -99,6 +204,48 @@ describe('module factory smoke test', () => {
         })
         .then(function(result) {
             return _idMgr.validate(result);
+        })
+        .then(function(result) {
+            result.should.eql(true);
+            done();
+        })
+        .catch( function(err) { 
+            console.error(err);
+            done(err); 
+        });
+    });
+
+    it('validate should default to version v4', done => {
+        var _idMgr = null,
+            _version = "v4";
+        _factory.create({})
+        .then(function(obj) {
+            _idMgr = obj;
+            return obj.generate( { version: _version } );
+        })
+        .then(function(result) {
+            return _idMgr.validate(result );
+        })
+        .then(function(result) {
+            result.should.eql(true);
+            done();
+        })
+        .catch( function(err) { 
+            console.error(err);
+            done(err); 
+        });
+    });
+
+    it('validate should return true for valid v4 specific id', done => {
+        var _idMgr = null,
+            _version = "v4";
+        _factory.create({})
+        .then(function(obj) {
+            _idMgr = obj;
+            return obj.generate( { version: _version } );
+        })
+        .then(function(result) {
+            return _idMgr.validate(result, _version );
         })
         .then(function(result) {
             result.should.eql(true);
@@ -124,6 +271,141 @@ describe('module factory smoke test', () => {
         .catch( function(err) { 
             console.error(err);
             done(err); 
+        });
+    });
+
+    it('validate should return false validating v1 against a v4 uuid', done => {
+        var _idMgr = null;
+        _factory.create({})
+        .then(function(obj) {
+            _idMgr = obj;
+            return obj.generate( { version: "v4" } );
+        })
+        .then(function(result) {
+            return _idMgr.validate(result, "v1" );
+        })
+        .then(function(result) {
+            result.should.eql(false);
+            done();
+        })
+        .catch( function(err) { 
+            console.error(err);
+            done(err); 
+        });
+    });
+
+    it('validate should return false validating v1 against default version uuid', done => {
+        var _idMgr = null;
+        _factory.create({})
+        .then(function(obj) {
+            _idMgr = obj;
+            return obj.generate();
+        })
+        .then(function(result) {
+            return _idMgr.validate(result, "v1" );
+        })
+        .then(function(result) {
+            result.should.eql(false);
+            done();
+        })
+        .catch( function(err) { 
+            console.error(err);
+            done(err); 
+        });
+    });
+
+    it('validate should return false validating v2 against default version uuid', done => {
+        var _idMgr = null;
+        _factory.create({})
+        .then(function(obj) {
+            _idMgr = obj;
+            return obj.generate();
+        })
+        .then(function(result) {
+            return _idMgr.validate(result, "v2" );
+        })
+        .then(function(result) {
+            result.should.eql(false);
+            done();
+        })
+        .catch( function(err) { 
+            console.error(err);
+            done(err); 
+        });
+    });
+
+    it('validate should return true validating against a valid v2 uuid', done => {
+        const _version = 2;
+        _factory.create({})
+        .then(function(obj) {
+            const _id = `110ec58a-a0f2-${_version}ac4-8393-c866d813b8d1`;
+            return obj.validate( _id, `v${_version}` );
+        })
+        .then(function(result) {
+            result.should.eql(true);
+            done();
+        })
+        .catch( function(err) { 
+            console.error(err);
+            done(err); 
+        });
+    });
+
+    it('validate should return true validating against a valid v3 uuid', done => {
+        const _version = 3;
+        _factory.create({})
+        .then(function(obj) {
+            const _id = `110ec58a-a0f2-${_version}ac4-8393-c866d813b8d1`;
+            return obj.validate( _id, `v${_version}` );
+        })
+        .then(function(result) {
+            result.should.eql(true);
+            done();
+        })
+        .catch( function(err) { 
+            console.error(err);
+            done(err); 
+        });
+    });
+
+    it('validate should return true validating against a valid v5 uuid', done => {
+        const _version = 5;
+        _factory.create({})
+        .then(function(obj) {
+            const _id = `110ec58a-a0f2-${_version}ac4-8393-c866d813b8d1`;
+            return obj.validate( _id, `v${_version}` );
+        })
+        .then(function(result) {
+            result.should.eql(true);
+            done();
+        })
+        .catch( function(err) { 
+            console.error(err);
+            done(err); 
+        });
+    });
+
+    it('validate should reject validating against a v6 uuid', done => {
+        const _version = 6;
+        _factory.create({})
+        .then(function(obj) {
+            const _id = `110ec58a-a0f2-${_version}ac4-8393-c866d813b8d1`;
+            return obj.validate( _id, `v${_version}` );
+        })
+        .then(function(result) {
+            // should have rejected by now
+            done(new Error('test fail: validate should have rejected version'));  
+        })
+        .catch( function(err) { 
+            // We are expecting this error
+            // console.error(err);
+            err.message.should.eql(`${_factory.ERROR.INVALID_VERSION_PARAMETER}: v${_version}`);
+            done(); 
+        })
+        .catch( function(err) { 
+            // We are NOT expecting this error
+            console.error(err.message); 
+            done(err);  // to pass on err, remove err (done() - no arguments)
         });
     });
 });
