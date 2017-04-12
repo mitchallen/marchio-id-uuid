@@ -27,15 +27,15 @@ const uuid = require('uuid');
  * @param {Object} spec Named parameters object
  * @returns {Promise} that resolves to {module:marchio-id-uuid}
  * @example <caption>Usage example</caption>
-    var factory = require("marchio-id-uuid");
- 
-    factory.create({})
-    .then(function(obj) {
-        return obj.health();
-    })
-    .catch( function(err) { 
-        console.error(err); 
-    });
+ *  var factory = require("marchio-id-uuid");
+ *
+ *  factory.create({})
+ *  .then(function(obj) {
+ *      return obj.health();
+ *  })
+ *  .catch( function(err) { 
+ *      console.error(err); 
+ *  });
  */
 module.exports.create = (spec) => {
 
@@ -69,18 +69,18 @@ module.exports.create = (spec) => {
               * @instance
               * @memberof module:marchio-id-uuid
               * @example <caption>Usage Example</caption>
-                var factory = require("marchio-id-uuid");
-             
-                factory.create({})
-                .then(function(obj) {
-                    return obj.health();
-                })
-                .then(function(result) {
-                    console.log("HEALTH: ", result);
-                })
-                .catch( function(err) { 
-                    console.error(err); 
-                });
+              * var factory = require("marchio-id-uuid");
+              * 
+              * factory.create({})
+              * .then(function(obj) {
+              *     return obj.health();
+              * })
+              * .then(function(result) {
+              *     console.log("HEALTH: ", result);
+              * })
+              * .catch( function(err) { 
+              *     console.error(err); 
+              * });
             */
             health: function() {
                 return new Promise((resolve,reject) => {
@@ -90,13 +90,29 @@ module.exports.create = (spec) => {
             /** Generate ID String
               * @function
               * @instance
+              * @param {Object} spec Named parameters object
+              * @param {string} [spec.version] Optional version. Valid values: "v1" or "v4" (default)
+              * @returns {Promise} that resolves to a uuid based on the version
               * @memberof module:marchio-id-uuid
-              * @example <caption>Usage Example</caption>
+              * @example <caption>Generate default v4 uuid</caption>
               * var factory = require("marchio-id-uuid");
               *
               * factory.create({})
               * .then(function(obj) {
               *      return obj.generate();
+              * })
+              * .then(function(result) {
+              *     console.log("ID: ", result);
+              * })
+              * .catch( function(err) { 
+              *     console.error(err); 
+              * });
+              * @example <caption>Generate v1 uuid</caption>
+              * var factory = require("marchio-id-uuid");
+              *
+              * factory.create({})
+              * .then(function(obj) {
+              *      return obj.generate( { version: "v1" } );
               * })
               * .then(function(result) {
               *     console.log("ID: ", result);
@@ -118,13 +134,32 @@ module.exports.create = (spec) => {
             /** Validate ID String
               * @function
               * @instance
+              * @param {string} uuid a uuid
+              * @param {string} [version] Optional version. Default to "v4". Valid values: "v1","v2","v3","v4", or "v5".
+              * @returns {Promise} that resolves to a uuid based on the version
               * @memberof module:marchio-id-uuid
-              * @example <caption>Usage Example</caption>
+              * @example <caption>Validate version v4 (default) uuid</caption>
               * var factory = require("marchio-id-uuid");
               * 
               * factory.create({})
               * .then(function(obj) {
               *     return obj.validate('110ec58a-a0f2-4ac4-8393-c866d813b8d1');
+              * })
+              * .then(function(result) {
+              *     console.log( result ? "valid" : "invalid" );
+              * })
+              * .catch( function(err) { 
+              *     console.error(err); 
+              * });
+              * @example <caption>Validate version v1 uuid</caption>
+              * var factory = require("marchio-id-uuid");
+              * 
+              * factory.create({})
+              * .then(function(obj) {
+              *     return obj.validate(
+              *         '110ec58a-a0f2-1ac4-8393-c866d813b8d1', 
+              *         'v1'
+              *     );
               * })
               * .then(function(result) {
               *     console.log( result ? "valid" : "invalid" );
@@ -146,19 +181,19 @@ module.exports.create = (spec) => {
     });
 };
 
-/**
- * 
+/** 
  * Error module
  * @module marchio-id-uuid-ERROR
- * @param {string} ```MODEL_MUST_BE_DEFINED``` - datastore.create: model must be defined
+ * @param {string} ```GENERATE_V1_V4_ONLY``` - marchio-id-uuid.generate only supports version values of v1 or v4
+ * @param {string} ```INVALID_VERSION_PARAMETER``` - marchio-id-uuid.validate - invalid version parameter
  * @example <caption>Usage example</caption>
- .catch( (err) => {
-    if( err.message == _factory.ERROR.MODEL_MUST_BE_DEFINED ) {
-        ...
-    }
-}
+ * .catch( (err) => {
+ *    if( err.message == _factory.ERROR.MODEL_MUST_BE_DEFINED ) {
+ *        ...
+ *    }
+ * }
  */
 var _ERROR = module.exports.ERROR = {
-    GENERATE_V1_V4_ONLY:       'marchio-id-uuid.generate only supports version values of "v1" or "v4"',
+    GENERATE_V1_V4_ONLY:       'marchio-id-uuid.generate only supports version values of v1 or v4',
     INVALID_VERSION_PARAMETER: 'marchio-id-uuid.validate - invalid version parameter'   
 };
