@@ -66,6 +66,45 @@ factory.create({})
 });
 ```
 
+### Browser Example
+
+```
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>marchio-id-uuid example</title>
+    <meta name="description" content="marchio-id-uuid example">
+    <!-- either cdn should work once tagged and published -->
+    <!--
+    <script src="https://cdn.rawgit.com/mitchallen/marchio-id-uuid/v0.1.0/dist/marchio-id-uuid.min.js"></script>
+    <script src="https://unpkg.com/marchio-id-uuid@0.1.0/dist/marchio-id-uuid.min.js"></script>
+    -->
+    <script src="https://unpkg.com/marchio-id-uuid@0.1.0/dist/marchio-id-uuid.min.js"></script>
+    <script>
+      // Note that the 'window.'' prefix is not needed by most if not all browsers
+      // var factory = window.MitchAllen.MarchioIdUuid;
+      var factory = MitchAllen.MarchioIdUuid;
+      factory.create({})
+      .then(function(obj) {
+        return obj.generate();
+      })
+      .then(function(result) {
+        console.log("ID: ", result);
+      })
+      .catch( function(err) { 
+        console.error(err); 
+      }); 
+    </script>
+  </head>
+  <body>
+    <h1>marchio-id-uuid example</h1>
+    <p>See JavaScript developer console for output.</p>
+  </body>
+</html>
+
+```
+
 * * *
 
 ## References:

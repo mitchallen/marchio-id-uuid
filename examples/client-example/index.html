@@ -13,10 +13,8 @@
     <script src="https://unpkg.com/marchio-id-uuid@0.1.0/dist/marchio-id-uuid.min.js"></script>
     <script>
       // Note that the 'window.'' prefix is not needed by most if not all browsers
-      // var factory = window.MitchAllen.(standalone-name();
-      var factory = window.MitchAllen.MarchioIdUuid;
-      // console.log(factory);
-      // // Add valid named parameters for create;
+      // var factory = window.MitchAllen.MarchioIdUuid;
+      var factory = MitchAllen.MarchioIdUuid;
       factory.create({})
       .then(function(obj) {
         return obj.generate();
