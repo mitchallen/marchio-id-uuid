@@ -57,6 +57,21 @@ describe('module factory smoke test', () => {
         });
     });
 
+    it('package method should return package name', done => {
+        _factory.create({})
+        .then(function(obj) {
+            return obj.package();
+        })
+        .then(function(result) {
+            result.should.eql("marchio-id-uuid");
+            done();
+        })
+        .catch( function(err) { 
+            console.error(err);
+            done(err); 
+        });
+    });
+
     it('health method should return ok', done => {
         _factory.create({})
         .then(function(obj) {
