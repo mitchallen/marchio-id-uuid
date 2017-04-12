@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>marchio-id-uuid iterate</title>
+    <meta name="description" content="marchio-id-uuid example">
+    <!-- either cdn should work once tagged and published -->
+    <!--
+    <script src="https://cdn.rawgit.com/mitchallen/marchio-id-uuid/v0.1.0/dist/marchio-id-uuid.min.js"></script>
+    <script src="https://unpkg.com/marchio-id-uuid@0.1.0/dist/marchio-id-uuid.min.js"></script>
+    <script src="../../dist/marchio-id-uuid.min.js"></script>
+    -->
+    <script src="https://unpkg.com/marchio-id-uuid@0.1.0/dist/marchio-id-uuid.min.js"></script>
+    <script>
+      // Note that the 'window.'' prefix is not needed by most if not all browsers
+      // var factory = window.MitchAllen.MarchioIdUuid;
+      var factory = MitchAllen.MarchioIdUuid;
+      factory.create({})
+      .then(function(obj) {
+        var list = [];
+        for( var i = 0; i < 10; i++ ) {
+          list.push( obj.generate() );
+        }
+        return Promise.all(list);
+      })
+      .then(function(result) {
+        console.log("IDs: ", result);
+      })
+      .catch( function(err) { 
+        console.error(err); 
+      }); 
+    </script>
+  </head>
+  <body>
+    <h1>marchio-id-uuid iterate</h1>
+    <p>See JavaScript developer console for output.</p>
+    <code>
+    </code>
+  </body>
+</html>
